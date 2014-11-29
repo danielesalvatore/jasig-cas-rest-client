@@ -1,0 +1,29 @@
+{
+  "name": "jasig-cas-rest-client",
+  "version": "0.0.1",
+  "description": "A very basic REST client for Jasig CAS (Central Authentication Service http://jasig.github.io/cas/4.0.0/index.html) ",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielefenix/jasig-cas-rest-client.git"
+  },
+  "keywords": [
+    "Jasig",
+    "CAS",
+    "rest",
+    "RequireJS"
+  ],
+  "author": "Daniele Salvatore",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/danielefenix/jasig-cas-rest-client/issues"
+  },
+  "homepage": "https://github.com/danielefenix/jasig-cas-rest-client",
+  "dependencies": {
+        "jquery": "~2.1.0",
+        "requirejs": "~2.1.15"
+    }
+}
