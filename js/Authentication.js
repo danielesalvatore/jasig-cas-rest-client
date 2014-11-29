@@ -1,10 +1,20 @@
 define([
 	'jquery',
-	'js/Config'
+	'config/Config'
 	], function ($, config) {
+
+	'use strict';	
 
 	function Auth(){}
 
+	/**
+    	Method gets the Ticket Granting Ticket of CAS protocol.
+    	For more info: http://jasig.github.io/cas/4.0.0/index.html
+
+     	@method getTGT
+     	@param {String} User username
+     	@param {String} User password
+    **/
 	Auth.prototype.getTGT = function (username, password) {
 
 		var self = this;
@@ -23,6 +33,12 @@ define([
 		});
 	};
 
+	/**
+    	Method gets the Service Ticket of CAS protocol.
+    	For more info: http://jasig.github.io/cas/4.0.0/index.html
+
+     	@method getTGT
+    **/
 	Auth.prototype.getST = function (data, status, xhr) {
 
 		return new Promise(function(fulfilled, rejected){
@@ -37,16 +53,28 @@ define([
 		});
 	};
 
-	Auth.prototype.cas = function (username, password) {
+ 	/**
+    	Method performs CAS authentication.
+
+     	@method casLogin
+     	@param {Object} credentials Object hash containing user credentials.
+    **/
+	Auth.prototype.casLogin = function (credentials) {
 		
-		return this.getTGT(username, password);
+		return this.getTGT(credentials[config.USERNAME], credentials[config.PASSWORD]);
 	}
 
-	Auth.prototype.mock = function (username, password) {
+ 	/**
+    	Method mocks the login process for development purposes.
+
+    	@method mockLogin
+    	@param {Object} credentials Object hash containing user credentials.
+    **/
+	Auth.prototype.mockLogin = function (credentials) {
 		
 		return new Promise(function(fulfilled, rejected){
 			
-			if (username === 'mock') {
+			if (credentials[config.USERNAME] === 'mock') {
 				fulfilled('fake-service-ticket-123456789');
 			} else {
 				rejected();
@@ -54,12 +82,22 @@ define([
 		});
 	};
 
-	Auth.prototype.authenticate = function (username, password){
+	/**
+    	Method logs a user into the system with the configured login
+     	function.
 
-		var loginFn = $.proxy(this[config.AUTH_METHOD], this);
+    	@method authenticate
+    **/
+	Auth.prototype.authenticate = function (credentials){
+
+		if (!credentials.hasOwnProperty(config.USERNAME) || !credentials.hasOwnProperty(config.PASSWORD)){
+			throw new Error('Error: missing '+config.USERNAME+' or '+config.PASSWORD );
+		}
+
+		var loginFn = $.proxy(this[config.AUTH_METHOD+'Login'], this);
 
 		if (loginFn){
-			return loginFn(username, password);
+			return loginFn(credentials);
 		} else {
 			throw new Error('ERROR: Unknown Authentication method "' + config.AUTH_METHOD +'"');
 		}
