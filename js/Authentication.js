@@ -37,9 +37,32 @@ define([
 		});
 	};
 
+	Auth.prototype.cas = function (username, password) {
+		
+		return this.getTGT(username, password);
+	}
+
+	Auth.prototype.mock = function (username, password) {
+		
+		return new Promise(function(fulfilled, rejected){
+			
+			if (username === 'mock') {
+				fulfilled('fake-service-ticket-123456789');
+			} else {
+				rejected();
+			}
+		});
+	};
+
 	Auth.prototype.authenticate = function (username, password){
 
-		return this.getTGT(username, password);
+		var loginFn = $.proxy(this[config.AUTH_METHOD], this);
+
+		if (loginFn){
+			return loginFn(username, password);
+		} else {
+			throw new Error('ERROR: Unknown Authentication method "' + config.AUTH_METHOD +'"');
+		}
 	};
 
 	return Auth;

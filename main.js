@@ -6,27 +6,25 @@ requirejs.config({
 
 requirejs(['js/Authentication'], function (Auth){
 
-	var auth = new Auth();
+	var auth = new Auth(),
+		count = 0;
 
 	function onFulfilled(ST){
 
-		$('#log').append('<p>SUCCESS: User is authenticated.</p>');
-		$('#log').append('<p>Service ticket:</p>');
-		$('#log').append('<p>'+ST+'</p>');
-		$('#log').append('<p> ######## </p>');
+		$('#log').prepend('<p>['+ count +'] SUCCESS: User is authenticated. [ST: '+ST+'] </p><p> ######## </p>');
 	}
 
 	function onRejected( jqXHR, textStatus, errorThrown ){
 
-		$('#log').append('<p>ERROR: User is NOT authenticated.</p>');
-		$('#log').append('<p>Error Thrown:</p>');
-		$('#log').append('<p>'+errorThrown+'</p>');
-		$('#log').append('<p> ######## </p>');
+		$('#log').prepend('<p>['+ count +'] ERROR: User is NOT authenticated. [Error: '+errorThrown+']</p><p> ######## </p>');
 
 		throw new Error('ERROR: ' + errorThrown);
 	}
 
 	$('#submit').on('click', function () {
+		
+		count++;
+		
 		auth.authenticate($('[name=username]').val(), $('[name=password]').val())
 		.then(onFulfilled, onRejected);
 	});

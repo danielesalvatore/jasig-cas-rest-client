@@ -5,6 +5,7 @@ define(function () {
 
     return {
         SERVICE_TO_ACCESS : 'http://myservice',
-        CAS_SERVER: HOST + PORT + 'cas/v1/tickets'
+        CAS_SERVER: HOST + PORT + 'cas/v1/tickets',
+        AUTH_METHOD : 'cas'
     }
 });
