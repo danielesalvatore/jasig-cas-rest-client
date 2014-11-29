@@ -1,6 +1,6 @@
 {
   "name": "jasig-cas-rest-client",
-  "version": "0.0.1",
+  "version": "0.2.0",
   "description": "A very basic REST client for Jasig CAS (Central Authentication Service http://jasig.github.io/cas/4.0.0/index.html) ",
   "main": "main.js",
   "scripts": {

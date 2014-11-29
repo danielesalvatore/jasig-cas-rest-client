@@ -4,7 +4,12 @@ requirejs.config({
     }
  });
 
-requirejs(['js/Authentication'], function (Auth){
+requirejs([
+	'js/Authentication',
+	'config/Config'
+	], function (Auth, config){
+
+	'use strict';
 
 	var auth = new Auth(),
 		count = 0;
@@ -24,9 +29,12 @@ requirejs(['js/Authentication'], function (Auth){
 	$('#submit').on('click', function () {
 		
 		count++;
-		
-		auth.authenticate($('[name=username]').val(), $('[name=password]').val())
-		.then(onFulfilled, onRejected);
+
+		var credentials = {};
+		credentials[config.USERNAME] = $('[name=username]').val();
+		credentials[config.PASSWORD] = $('[name=password]').val();
+
+		auth.authenticate(credentials).then(onFulfilled, onRejected);
 	});
 
 })
